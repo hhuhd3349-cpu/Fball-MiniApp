@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pitch & Rules Master ⚽</title>
+<meta name="description" content="Standard football pitch dimensions and referee rules, at a tap.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="whistle-line" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="hero-top">
+    <span class="eyebrow">IFAB LAWS OF THE GAME</span>
+    <span class="ref-badge">🟨</span>
+  </div>
+  <h1 class="hero-title">PITCH &<br>RULES<br>MASTER</h1>
+  <p class="hero-sub">Standard pitch dimensions and clear referee rules, whenever you need the call made fast.</p>
+  <button class="start-btn" id="startBtn">
+    <span class="start-slash">/</span>start
+    <span class="start-arrow">→</span>
+  </button>
+</header>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tab active" data-tab="pitch">📏 Pitch</button>
+  <button class="tab" data-tab="rules">🟥 Rules</button>
+  <span class="tab-indicator" id="tabIndicator"></span>
+</nav>
+
+<main id="app">
+
+  <!-- PITCH DIMENSIONS -->
+  <section class="panel active" id="panel-pitch">
+    <div class="panel-head">
+      <h2>Pitch Dimensions</h2>
+      <div class="unit-toggle" id="unitToggle">
+        <button class="unit-opt active" data-unit="m">m</button>
+        <button class="unit-opt" data-unit="yd">yd</button>
+      </div>
+    </div>
+    <p class="panel-hint">Tap any marking on the pitch for its exact size.</p>
+
+    <div class="pitch-wrap">
+      <svg viewBox="0 0 1090 720" class="pitch-svg" id="pitchSvg" role="img" aria-label="Football pitch diagram with tappable dimension markers">
+        <rect x="0" y="0" width="1090" height="720" class="pitch-bg" rx="14"/>
+        <!-- turf stripes -->
+        <g class="stripes">
+          <rect x="20" y="20" width="102" height="680"/>
+          <rect x="224" y="20" width="102" height="680"/>
+          <rect x="428" y="20" width="102" height="680"/>
+          <rect x="632" y="20" width="102" height="680"/>
+          <rect x="836" y="20" width="102" height="680"/>
+        </g>
+
+        <!-- outer boundary -->
+        <rect x="20" y="20" width="1050" height="680" class="line-shape" />
+        <!-- halfway line -->
+        <line x1="545" y1="20" x2="545" y2="700" class="line-shape"/>
+
+        <!-- center circle (hotspot) -->
+        <circle cx="545" cy="360" r="91.5" class="line-shape"/>
+        <circle cx="545" cy="360" r="4" class="line-shape spot"/>
+        <circle class="hotspot" cx="545" cy="360" r="26"
+          data-name="Centre circle" data-m="9.15 m radius" data-yd="10 yd radius"/>
+
+        <!-- left penalty area -->
+        <rect x="20" y="158.5" width="165" height="403" class="line-shape"/>
+        <rect x="20" y="268.4" width="55" height="183.2" class="line-shape"/>
+        <circle cx="130" cy="360" r="4" class="line-shape spot"/>
+        <path d="M 185 291.8 A 91.5 91.5 0 0 1 185 428.2" class="line-shape"/>
+        <circle class="hotspot" cx="102" cy="360" r="30"
+          data-name="Penalty area" data-m="40.3 m × 16.5 m" data-yd="44 yd × 18 yd"/>
+        <circle class="hotspot" cx="47" cy="360" r="22"
+          data-name="Goal area (6-yard box)" data-m="18.32 m × 5.5 m" data-yd="20 yd × 6 yd"/>
+        <circle class="hotspot" cx="130" cy="360" r="16"
+          data-name="Penalty spot" data-m="11 m from goal line" data-yd="12 yd from goal line"/>
+
+        <!-- right penalty area (mirrored) -->
+        <rect x="905" y="158.5" width="165" height="403" class="line-shape"/>
+        <rect x="1015" y="268.4" width="55" height="183.2" class="line-shape"/>
+        <circle cx="960" cy="360" r="4" class="line-shape spot"/>
+        <path d="M 905 291.8 A 91.5 91.5 0 0 0 905 428.2" class="line-shape"/>
+        <circle class="hotspot" cx="988" cy="360" r="30"
+          data-name="Penalty area" data-m="40.3 m × 16.5 m" data-yd="44 yd × 18 yd"/>
+        <circle class="hotspot" cx="1043" cy="360" r="22"
+          data-name="Goal area (6-yard box)" data-m="18.32 m × 5.5 m" data-yd="20 yd × 6 yd"/>
+        <circle class="hotspot" cx="960" cy="360" r="16"
+          data-name="Penalty spot" data-m="11 m from goal line" data-yd="12 yd from goal line"/>
+
+        <!-- goals -->
+        <rect x="4" y="323.4" width="16" height="73.2" class="goal-shape"/>
+        <rect x="1070" y="323.4" width="16" height="73.2" class="goal-shape"/>
+        <circle class="hotspot" cx="12" cy="360" r="16"
+          data-name="Goal" data-m="7.32 m × 2.44 m" data-yd="8 yd × 8 ft"/>
+        <circle class="hotspot" cx="1078" cy="360" r="16"
+          data-name="Goal" data-m="7.32 m × 2.44 m" data-yd="8 yd × 8 ft"/>
+
+        <!-- corner arcs -->
+        <path d="M 30 20 A 10 10 0 0 1 20 30" class="line-shape"/>
+        <path d="M 1060 20 A 10 10 0 0 0 1070 30" class="line-shape"/>
+        <path d="M 20 690 A 10 10 0 0 1 30 700" class="line-shape"/>
+        <path d="M 1070 690 A 10 10 0 0 1 1060 700" class="line-shape"/>
+        <circle class="hotspot" cx="30" cy="30" r="14"
+          data-name="Corner arc" data-m="1 m radius" data-yd="1 yd radius"/>
+
+        <!-- touchline / goal line length hotspots -->
+        <circle class="hotspot" cx="545" cy="20" r="14"
+          data-name="Touchline (length)" data-m="100–110 m (int'l)" data-yd="110–120 yd (int'l)"/>
+        <circle class="hotspot" cx="20" cy="360" r="14"
+          data-name="Goal line (width)" data-m="64–75 m (int'l)" data-yd="70–80 yd (int'l)"/>
+      </svg>
+
+      <div class="tooltip" id="tooltip">
+        <span class="tooltip-name">Tap a marking</span>
+        <span class="tooltip-value">to see its size</span>
+      </div>
+    </div>
+
+    <div class="dim-table">
+      <div class="dim-row"><span>Length (international)</span><b data-m="100–110 m" data-yd="110–120 yd">100–110 m</b></div>
+      <div class="dim-row"><span>Width (international)</span><b data-m="64–75 m" data-yd="70–80 yd">64–75 m</b></div>
+      <div class="dim-row"><span>Penalty area</span><b data-m="40.3 × 16.5 m" data-yd="44 × 18 yd">40.3 × 16.5 m</b></div>
+      <div class="dim-row"><span>Goal area</span><b data-m="18.32 × 5.5 m" data-yd="20 × 6 yd">18.32 × 5.5 m</b></div>
+      <div class="dim-row"><span>Centre circle radius</span><b data-m="9.15 m" data-yd="10 yd">9.15 m</b></div>
+      <div class="dim-row"><span>Penalty spot distance</span><b data-m="11 m" data-yd="12 yd">11 m</b></div>
+      <div class="dim-row"><span>Goal size</span><b data-m="7.32 × 2.44 m" data-yd="8 yd × 8 ft">7.32 × 2.44 m</b></div>
+      <div class="dim-row"><span>Corner arc radius</span><b data-m="1 m" data-yd="1 yd">1 m</b></div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section class="panel" id="panel-rules">
+    <div class="panel-head">
+      <h2>Referee Rules</h2>
+    </div>
+    <p class="panel-hint">Tap a card to flip it and read the call.</p>
+
+    <div class="card-grid" id="cardGrid">
+
+      <button class="ref-card yellow" data-card="offside">
+        <div class="card-face front">
+          <span class="card-icon">🚩</span>
+          <span class="card-tag">LAW 11</span>
+          <span class="card-title">Offside</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>A player is offside if any part of their head, body, or feet is in the opponents' half, ahead of the ball, and closer to the goal line than the second-last opponent when the ball is played to them.</p>
+          <p class="card-note">Not an offense on its own — only penalized if the player interferes with play, an opponent, or gains advantage from the position.</p>
+        </div>
+      </button>
+
+      <button class="ref-card red" data-card="fouls">
+        <div class="card-face front">
+          <span class="card-icon">🥊</span>
+          <span class="card-tag">LAW 12</span>
+          <span class="card-title">Fouls & Misconduct</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p><b>Direct free kick</b> offenses: kicking, tripping, jumping at, charging, striking, pushing, holding, or handball.</p>
+          <p><b>Indirect free kick</b> offenses: dangerous play, obstruction, or a goalkeeper handling a deliberate back-pass.</p>
+          <p class="card-note">Inside the offender's own penalty area, a direct free kick offense becomes a penalty.</p>
+        </div>
+      </button>
+
+      <button class="ref-card yellow" data-card="cards">
+        <div class="card-face front">
+          <span class="card-icon">🟨</span>
+          <span class="card-tag">LAW 12</span>
+          <span class="card-title">Cards</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p><b>Yellow (caution):</b> unsporting behavior, dissent, persistent fouling, delaying the restart, or wrong distance at a free kick.</p>
+          <p><b>Red (sending-off):</b> serious foul play, violent conduct, denying an obvious goal-scoring opportunity, offensive language, or a second yellow.</p>
+        </div>
+      </button>
+
+      <button class="ref-card red" data-card="penalty">
+        <div class="card-face front">
+          <span class="card-icon">🎯</span>
+          <span class="card-tag">LAW 14</span>
+          <span class="card-title">Penalty Kick</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>Awarded for a direct free kick offense committed inside the defender's own penalty area. Taken from the penalty spot, 11m out.</p>
+          <p class="card-note">All players except the kicker and goalkeeper stay outside the penalty area and the arc. The goalkeeper must have at least part of one foot on the line until the ball is kicked.</p>
+        </div>
+      </button>
+
+      <button class="ref-card yellow" data-card="freekick">
+        <div class="card-face front">
+          <span class="card-icon">🧱</span>
+          <span class="card-tag">LAW 13</span>
+          <span class="card-title">Free Kicks</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p><b>Direct:</b> can be scored straight into the goal. <b>Indirect:</b> must touch another player before it counts — the referee raises an arm to signal it.</p>
+          <p class="card-note">Opponents must retreat at least 9.15 m (10 yd) from the ball until it's in play.</p>
+        </div>
+      </button>
+
+      <button class="ref-card red" data-card="handball">
+        <div class="card-face front">
+          <span class="card-icon">✋</span>
+          <span class="card-tag">LAW 12</span>
+          <span class="card-title">Handball</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>An offense if a player deliberately touches the ball with hand or arm, or makes their body unnaturally bigger — even if unintentional, it's still penalized when a goal is scored or a clear chance created.</p>
+        </div>
+      </button>
+
+      <button class="ref-card yellow" data-card="throwin">
+        <div class="card-face front">
+          <span class="card-icon">🤾</span>
+          <span class="card-tag">LAW 15</span>
+          <span class="card-title">Throw-In</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>Awarded when the ball fully crosses the touchline. The thrower faces the field, keeps both feet on or behind the line, and releases the ball with both hands from behind and over the head.</p>
+        </div>
+      </button>
+
+      <button class="ref-card yellow" data-card="goalkick">
+        <div class="card-face front">
+          <span class="card-icon">🥅</span>
+          <span class="card-tag">LAW 16</span>
+          <span class="card-title">Goal Kick</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>Awarded when the ball fully crosses the goal line, having last touched an attacker, without a goal being scored. Taken from anywhere in the goal area; the ball is in play once it leaves the penalty area.</p>
+        </div>
+      </button>
+
+      <button class="ref-card yellow" data-card="corner">
+        <div class="card-face front">
+          <span class="card-icon">🚩</span>
+          <span class="card-tag">LAW 17</span>
+          <span class="card-title">Corner Kick</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>Awarded when the ball fully crosses the goal line, having last touched a defender, without a goal being scored. Taken from the corner arc nearest where it went out.</p>
+        </div>
+      </button>
+
+      <button class="ref-card red" data-card="var">
+        <div class="card-face front">
+          <span class="card-icon">📺</span>
+          <span class="card-tag">LAW 5</span>
+          <span class="card-title">VAR</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>The video assistant referee only reviews four situations: goals, penalty decisions, direct red cards, and cases of mistaken identity.</p>
+        </div>
+      </button>
+
+      <button class="ref-card yellow" data-card="advantage">
+        <div class="card-face front">
+          <span class="card-icon">👐</span>
+          <span class="card-tag">LAW 5</span>
+          <span class="card-title">Advantage</span>
+          <span class="card-flip-hint">Tap to read</span>
+        </div>
+        <div class="card-face back">
+          <p>The referee can let play continue after a foul if stopping it would favor the offending team — signaled with both arms pushed forward.</p>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>Laws of the Game — IFAB standard reference</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
